@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FADA G Communication - Your Ultimate Gadget Plug</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom Tailwind Configuration for colors and animations */
+        @layer base {
+            html {
+                scroll-behavior: smooth;
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dark': '#2F3C4F', /* Deep Blue-Gray for main elements */
+                        'primary-light': '#4A5568', /* Medium Blue-Gray for lighter backgrounds/hover */
+                        'accent-main': '#D4AF37', /* Muted Gold - for highlights, active states */
+                        'accent-dark': '#A67C00', /* Darker Muted Gold */
+                        'text-light': '#F0F0F0', /* Soft Off-White for general text */
+                        'text-muted': '#B0B0B0', /* Medium Gray for secondary text */
+                        'bg-dark': '#1C232E', /* Very dark charcoal for main background */
+                        'bg-medium': '#2A3440', /* Dark gray for cards/sections */
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'fade-in-down': 'fadeInDown 0.5s ease-out forwards',
+                        'zoom-in': 'zoomIn 1.5s ease-out forwards',
+                        'slide-in-left': 'slideInLeft 1s ease-out forwards',
+                        'slide-in-right': 'slideInRight 1s ease-out forwards',
+                        'bounce-in': 'bounceIn 0.8s ease-out forwards',
+                        'glow-pulse': 'glowPulse 2s infinite alternate',
+                        'slide-x': 'slideX 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        fadeInDown: {
+                            '0%': { opacity: 0, transform: 'translateY(-20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        zoomIn: {
+                            '0%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1)' },
+                        },
+                        slideInLeft: {
+                            '0%': { opacity: 0, transform: 'translateX(-50px)' },
+                            '100%': { opacity: 1, transform: 'translateX(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: 0, transform: 'translateX(50px)' },
+                            '100%': { opacity: 1, transform: 'translateX(0)' },
+                        },
+                        bounceIn: {
+                            '0%': { opacity: 0, transform: 'scale(0.3)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)' },
+                            '70%': { transform: 'scale(0.9)' },
+                            '100%': { transform: 'scale(1)' },
+                        },
+                        glowPulse: {
+                            '0%, 100%': { 'box-shadow': '0 0 5px rgba(212, 175, 55, 0.7), 0 0 10px rgba(212, 175, 55, 0.5)' }, /* Using accent-main for glow */
+                            '50%': { 'box-shadow': '0 0 15px rgba(212, 175, 55, 1), 0 0 25px rgba(212, 175, 55, 0.8)' },
+                        },
+                        slideX: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        },
+                    },
+                },
+            }
+        };
+    </script>
+</head>
+<body class="font-inter antialiased text-text-light bg-bg-dark overflow-x-hidden">
+
+    <!-- Sticky Navigation Bar -->
+    <header class="fixed w-full bg-bg-dark bg-opacity-90 backdrop-blur-sm shadow-xl z-50 transition-all duration-300 ease-in-out border-b border-primary-dark/50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo and Store Name -->
+            <div class="flex items-center space-x-3">
+                <img src="https://placehold.co/40x40/D4AF37/2F3C4F?text=FG" alt="FADA G Logo" class="rounded-full border-2 border-accent-main">
+                <a href="#hero" class="text-2xl md:text-3xl font-extrabold text-text-light hover:text-accent-main transition-colors duration-300 drop-shadow-lg">
+                    FADA G <span class="text-primary-dark">Communication</span>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#hero" class="nav-link text-text-muted hover:text-accent-main font-medium text-lg transition-colors duration-300 relative group">Home<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-accent-main group-hover:w-full transition-all duration-300"></span></a>
+                <a href="#about" class="nav-link text-text-muted hover:text-accent-main font-medium text-lg transition-colors duration-300 relative group">About Us<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-accent-main group-hover:w-full transition-all duration-300"></span></a>
+                <a href="#products" class="nav-link text-text-muted hover:text-accent-main font-medium text-lg transition-colors duration-300 relative group">Products<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-accent-main group-hover:w-full transition-all duration-300"></span></a>
+                <a href="#why-choose-us" class="nav-link text-text-muted hover:text-accent-main font-medium text-lg transition-colors duration-300 relative group">Why Choose Us<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-accent-main group-hover:w-full transition-all duration-300"></span></a>
+                <a href="#testimonials" class="nav-link text-text-muted hover:text-accent-main font-medium text-lg transition-colors duration-300 relative group">Testimonials<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-accent-main group-hover:w-full transition-all duration-300"></span></a>
+                <a href="#contact" class="nav-link text-text-muted hover:text-accent-main font-medium text-lg transition-colors duration-300 relative group">Contact<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-accent-main group-hover:w-full transition-all duration-300"></span></a>
+                <button class="bg-gradient-to-r from-primary-dark to-accent-main text-text-light font-bold py-2 px-5 rounded-full flex items-center space-x-2 text-lg hover:from-primary-light hover:to-accent-dark transform hover:scale-105 transition-all duration-300 shadow-lg shadow-primary-dark/50">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    <span>Explore</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center space-x-4">
+                <button class="text-text-muted hover:text-accent-main focus:outline-none focus:ring-2 focus:ring-primary-dark rounded-md p-2 transition-colors duration-300">
+                    <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                </button>
+                <button id="mobile-menu-button" class="text-text-muted hover:text-accent-main focus:outline-none focus:ring-2 focus:ring-primary-dark rounded-md p-2 transition-colors duration-300">
+                    <i data-lucide="menu" class="w-7 h-7 menu-icon"></i>
+                    <i data-lucide="x" class="w-7 h-7 close-icon hidden"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="md:hidden bg-bg-medium shadow-inner pb-4 hidden animate-fade-in-down">
+            <div class="flex flex-col items-center space-y-4 px-4">
+                <a href="#hero" class="mobile-nav-link text-text-light hover:text-accent-main font-medium w-full text-center py-3 rounded-md transition-colors duration-300 text-lg">Home</a>
+                <a href="#about" class="mobile-nav-link text-text-light hover:text-accent-main font-medium w-full text-center py-3 rounded-md transition-colors duration-300 text-lg">About Us</a>
+                <a href="#products" class="mobile-nav-link text-text-light hover:text-accent-main font-medium w-full text-center py-3 rounded-md transition-colors duration-300 text-lg">Products</a>
+                <a href="#why-choose-us" class="mobile-nav-link text-text-light hover:text-accent-main font-medium w-full text-center py-3 rounded-md transition-colors duration-300 text-lg">Why Choose Us</a>
+                <a href="#testimonials" class="mobile-nav-link text-text-light hover:text-accent-main font-medium w-full text-center py-3 rounded-md transition-colors duration-300 text-lg">Testimonials</a>
+                <a href="#contact" class="mobile-nav-link text-text-light hover:text-accent-main font-medium w-full text-center py-3 rounded-md transition-colors duration-300 text-lg">Contact</a>
+                <button class="bg-gradient-to-r from-primary-dark to-accent-main text-text-light font-bold py-3 px-8 rounded-full text-lg hover:from-primary-light hover:to-accent-dark transform hover:scale-105 transition-all duration-300 shadow-lg shadow-primary-dark/50 w-full">
+                    <i data-lucide="shopping-cart" class="inline-block mr-2 w-5 h-5"></i>
+                    <span>Explore</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20"> <!-- Padding to account for fixed header -->
+
+        <!-- Hero Section -->
+        <section id="hero" class="section-animated relative h-screen flex items-center justify-center text-text-light overflow-hidden bg-gradient-to-br from-bg-dark via-primary-dark to-bg-dark">
+            <img
+                src="https://placehold.co/1920x1080/2F3C4F/D4AF37?text=Professional+Tech+Background"
+                alt="Professional Tech Background"
+                class="absolute inset-0 w-full h-full object-cover opacity-20"
+                onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/2F3C4F/D4AF37?text=Background+Image+Not+Found';"
+            />
+            <div class="relative z-10 text-center p-8 bg-black bg-opacity-50 rounded-xl shadow-2xl max-w-4xl mx-4 transform transition-all duration-700 ease-out border-2 border-accent-main/50 animate-glow-pulse">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight drop-shadow-lg text-accent-main">
+                    FADA G <span class="text-primary-dark">Communication</span>
+                </h1>
+                <p class="text-xl md:text-3xl mb-8 font-light text-text-light">
+                    Your Ultimate Gadget Plug
+                </p>
+                <div class="space-x-4">
+                    <a
+                        href="#products"
+                        class="inline-block bg-gradient-to-r from-accent-main to-primary-dark text-text-light font-bold py-3 px-8 rounded-full text-lg hover:from-accent-dark hover:to-primary-light transform hover:scale-105 transition-all duration-300 shadow-lg shadow-accent-main/50"
+                    >
+                        Explore Products
+                    </a>
+                    <a
+                        href="#contact"
+                        class="inline-block bg-transparent border-2 border-text-light text-text-light font-bold py-3 px-8 rounded-full text-lg hover:bg-text-light hover:text-bg-dark transform hover:scale-105 transition-all duration-300 shadow-lg shadow-text-light/30"
+                    >
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="section-animated py-20 bg-primary-dark border-b border-accent-main/50">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold text-accent-main mb-8">About FADA G Communication</h2>
+                <p class="text-lg leading-relaxed text-text-light max-w-3xl mx-auto mb-6">
+                    Welcome to **FADA G Communication**, your premier destination for cutting-edge phone accessories and smart gadgets. Established with a vision to seamlessly blend technology with everyday life, we are dedicated to bringing you the latest innovations that enhance your digital experience. Our passion lies in sourcing high-quality, durable, and stylish accessories that not only protect your devices but also elevate their functionality and aesthetics.
+                </p>
+                <p class="text-lg leading-relaxed text-text-light max-w-3xl mx-auto">
+                    We believe in the power of connection and the convenience that modern technology offers. From robust protection for your smartphone to crystal-clear audio solutions and lightning-fast charging, FADA G Communication is committed to being your trusted partner in the ever-evolving world of gadgets. Explore our extensive range and discover how we make technology work for you.
+                </p>
+            </div>
+        </section>
+
+        <!-- Product Categories Grid -->
+        <section id="products" class="section-animated py-20 bg-bg-medium border-b border-accent-main/50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-accent-main text-center mb-12">Explore Our Categories</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                    <div class="category-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="smartphone" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Phone Cases</h3>
+                        <p class="text-text-muted leading-relaxed mb-4">Discover our collection of ultra-protective and stylish cases designed for every phone model. From rugged armor to sleek, transparent covers, we have the perfect fit for your device.</p>
+                        <a href="#" class="mt-auto text-accent-main hover:text-accent-dark font-medium flex items-center space-x-2 transition-colors duration-300">
+                            <span>View All</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <div class="category-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="battery-charging" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Chargers & Cables</h3>
+                        <p class="text-text-muted leading-relaxed mb-4">Never run out of power with our high-speed chargers and durable cables. Explore wireless charging pads, power banks, and car chargers for every need.</p>
+                        <a href="#" class="mt-auto text-accent-main hover:text-accent-dark font-medium flex items-center space-x-2 transition-colors duration-300">
+                            <span>View All</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <div class="category-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="speaker" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Zealot Speakers</h3>
+                        <p class="text-text-muted leading-relaxed mb-4">Experience powerful, portable audio with Zealot speakers. Perfect for outdoor adventures or indoor ambiance, offering rich sound and long-lasting battery life.</p>
+                        <a href="#" class="mt-auto text-accent-main hover:text-accent-dark font-medium flex items-center space-x-2 transition-colors duration-300">
+                            <span>View All</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <div class="category-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="speaker" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">JBL Speakers</h3>
+                        <p class="text-text-muted leading-relaxed mb-4">Immerse yourself in premium sound with JBL speakers. From compact portables to powerful party speakers, enjoy signature JBL audio quality wherever you go.</p>
+                        <a href="#" class="mt-auto text-accent-main hover:text-accent-dark font-medium flex items-center space-x-2 transition-colors duration-300">
+                            <span>View All</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <div class="category-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="headphones" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Earbuds & Kooler Products</h3>
+                        <p class="text-text-muted leading-relaxed mb-4">Experience true wireless freedom with our range of earbuds. Plus, discover "Kooler" innovative gadgets that add convenience and fun to your tech life.</p>
+                        <a href="#" class="mt-auto text-accent-main hover:text-accent-dark font-medium flex items-center space-x-2 transition-colors duration-300">
+                            <span>View All</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <div class="category-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="music" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Bass Boost Gadgets</h3>
+                        <p class="text-text-muted leading-relaxed mb-4">For audiophiles who crave deep, resonant sound, explore our selection of bass-boosted headphones, subwoofers, and audio enhancements.</p>
+                        <a href="#" class="mt-auto text-accent-main hover:text-accent-dark font-medium flex items-center space-x-2 transition-colors duration-300">
+                            <span>View All</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Carousel -->
+        <section id="featured" class="section-animated py-20 bg-bg-dark border-b border-primary-dark/50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-accent-main text-center mb-12">Hot Deals & Top Products</h2>
+                <div class="relative overflow-hidden rounded-xl shadow-2xl border border-accent-main/30">
+                    <div id="product-carousel" class="flex transition-transform duration-500 ease-in-out">
+                        <!-- Product 1 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/300x200/2F3C4F/D4AF37?text=Phone+Case+Pro"
+                                    alt="Ultra-Slim Case"
+                                    class="w-full h-48 object-cover rounded-md mb-4 border border-accent-main/30"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/300x200/2F3C4F/D4AF37?text=Product+Image+Not+Found';"
+                                />
+                                <h3 class="text-2xl font-semibold text-text-light mb-2">Ultra-Slim Case</h3>
+                                <p class="text-accent-main text-xl font-bold mb-3">Sleek Protection</p>
+                                <span class="inline-block bg-primary-dark text-text-light text-sm px-3 py-1 rounded-full mb-4">New Design</span>
+                                <button class="bg-gradient-to-r from-accent-main to-primary-dark text-text-light font-bold py-2 px-6 rounded-full hover:from-accent-dark hover:to-primary-light transform hover:scale-105 transition-all duration-300 shadow-md shadow-accent-main/50">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Product 2 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/300x200/D4AF37/2F3C4F?text=Fast+Charger+Cable"
+                                    alt="Fast Charge Cable"
+                                    class="w-full h-48 object-cover rounded-md mb-4 border border-accent-main/30"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/300x200/D4AF37/2F3C4F?text=Product+Image+Not+Found';"
+                                />
+                                <h3 class="text-2xl font-semibold text-text-light mb-2">Turbo Charge Cable</h3>
+                                <p class="text-accent-main text-xl font-bold mb-3">Rapid Power</p>
+                                <span class="inline-block bg-primary-dark text-text-light text-sm px-3 py-1 rounded-full mb-4">High Durability</span>
+                                <button class="bg-gradient-to-r from-accent-main to-primary-dark text-text-light font-bold py-2 px-6 rounded-full hover:from-accent-dark hover:to-primary-light transform hover:scale-105 transition-all duration-300 shadow-md shadow-accent-main/50">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Product 3 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/300x200/2F3C4F/D4AF37?text=Zealot+Speaker"
+                                    alt="Zealot Speaker X"
+                                    class="w-full h-48 object-cover rounded-md mb-4 border border-accent-main/30"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/300x200/2F3C4F/D4AF37?text=Product+Image+Not+Found';"
+                                />
+                                <h3 class="text-2xl font-semibold text-text-light mb-2">Zealot SoundBlast</h3>
+                                <p class="text-accent-main text-xl font-bold mb-3">Immersive Audio</p>
+                                <span class="inline-block bg-primary-dark text-text-light text-sm px-3 py-1 rounded-full mb-4">Portable Power</span>
+                                <button class="bg-gradient-to-r from-accent-main to-primary-dark text-text-light font-bold py-2 px-6 rounded-full hover:from-accent-dark hover:to-primary-light transform hover:scale-105 transition-all duration-300 shadow-md shadow-accent-main/50">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Product 4 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/300x200/D4AF37/2F3C4F?text=JBL+Speaker"
+                                    alt="JBL Flip 6"
+                                    class="w-full h-48 object-cover rounded-md mb-4 border border-accent-main/30"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/300x200/D4AF37/2F3C4F?text=Product+Image+Not+Found';"
+                                />
+                                <h3 class="text-2xl font-semibold text-text-light mb-2">JBL PulseFlow</h3>
+                                <p class="text-accent-main text-xl font-bold mb-3">Dynamic Sound</p>
+                                <span class="inline-block bg-primary-dark text-text-light text-sm px-3 py-1 rounded-full mb-4">Waterproof</span>
+                                <button class="bg-gradient-to-r from-accent-main to-primary-dark text-text-light font-bold py-2 px-6 rounded-full hover:from-accent-dark hover:to-primary-light transform hover:scale-105 transition-all duration-300 shadow-md shadow-accent-main/50">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Product 5 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/300x200/2F3C4F/D4AF37?text=Wireless+Earbuds"
+                                    alt="Wireless Earbuds Pro"
+                                    class="w-full h-48 object-cover rounded-md mb-4 border border-accent-main/30"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/300x200/2F3C4F/D4AF37?text=Product+Image+Not+Found';"
+                                />
+                                <h3 class="text-2xl font-semibold text-text-light mb-2">AuraPods Pro</h3>
+                                <p class="text-accent-main text-xl font-bold mb-3">Immersive Audio</p>
+                                <span class="inline-block bg-primary-dark text-text-light text-sm px-3 py-1 rounded-full mb-4">Noise Cancelling</span>
+                                <button class="bg-gradient-to-r from-accent-main to-primary-dark text-text-light font-bold py-2 px-6 rounded-full hover:from-accent-dark hover:to-primary-light transform hover:scale-105 transition-all duration-300 shadow-md shadow-accent-main/50">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                         <!-- Product 6 (New) -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/300x200/D4AF37/2F3C4F?text=Smartwatch"
+                                    alt="Smartwatch X"
+                                    class="w-full h-48 object-cover rounded-md mb-4 border border-accent-main/30"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/300x200/D4AF37/2F3C4F?text=Product+Image+Not+Found';"
+                                />
+                                <h3 class="text-2xl font-semibold text-text-light mb-2">ChronoLink Smartwatch</h3>
+                                <p class="text-accent-main text-xl font-bold mb-3">Wearable Tech</p>
+                                <span class="inline-block bg-primary-dark text-text-light text-sm px-3 py-1 rounded-full mb-4">Fitness Tracker</span>
+                                <button class="bg-gradient-to-r from-accent-main to-primary-dark text-text-light font-bold py-2 px-6 rounded-full hover:from-accent-dark hover:to-primary-light transform hover:scale-105 transition-all duration-300 shadow-md shadow-accent-main/50">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carousel Navigation -->
+                    <button id="prev-product" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-bg-medium bg-opacity-70 text-text-light p-3 rounded-full hover:bg-opacity-100 transition-colors duration-300 z-10 shadow-lg shadow-primary-dark/50">
+                        &#10094;
+                    </button>
+                    <button id="next-product" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-bg-medium bg-opacity-70 text-text-light p-3 rounded-full hover:bg-opacity-100 transition-colors duration-300 z-10 shadow-lg shadow-accent-main/50">
+                        &#10095;
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="why-choose-us" class="section-animated py-20 bg-bg-medium border-b border-accent-main/50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-accent-main text-center mb-12">Why Choose FADA G Communication?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="why-choose-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="wallet" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Unbeatable Value</h3>
+                        <p class="text-text-muted leading-relaxed">We offer competitive pricing without compromising on quality, ensuring you get the best value for your investment in premium accessories.</p>
+                    </div>
+                    <div class="why-choose-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="award" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Premium Quality</h3>
+                        <p class="text-text-muted leading-relaxed">Every product in our catalog is rigorously tested and selected for its superior build, durability, and performance, guaranteeing satisfaction.</p>
+                    </div>
+                    <div class="why-choose-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="shield-check" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Reliable Warranty</h3>
+                        <p class="text-text-muted leading-relaxed">Shop with confidence knowing that all our products come with a solid warranty and dedicated customer support for any assistance you may need.</p>
+                    </div>
+                    <div class="why-choose-card bg-bg-dark p-8 rounded-xl shadow-xl border border-primary-dark/30 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 group">
+                        <div class="flex items-center justify-center w-20 h-20 bg-primary-dark text-accent-main rounded-full mb-6 group-hover:bg-accent-main group-hover:text-primary-dark transition-colors duration-300 shadow-lg shadow-primary-dark/50">
+                            <i data-lucide="fast-forward" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-light mb-3">Swift Delivery</h3>
+                        <p class="text-text-muted leading-relaxed">We understand your excitement! Our streamlined logistics ensure your desired gadgets are dispatched quickly and arrive at your doorstep in no time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="section-animated py-20 bg-bg-dark border-b border-primary-dark/50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-accent-main text-center mb-12">What Our Valued Customers Say</h2>
+                <div class="relative overflow-hidden rounded-xl shadow-2xl border border-accent-main/30">
+                    <div id="testimonial-carousel" class="flex transition-transform duration-500 ease-in-out">
+                        <!-- Testimonial 1 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/80x80/2F3C4F/D4AF37?text=User+1"
+                                    alt="Sarah M."
+                                    class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-accent-main"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/80x80/2F3C4F/D4AF37?text=Avatar';"
+                                />
+                                <p class="text-lg italic text-text-muted mb-4">"FADA G Communication is simply the best! Their phone cases are incredibly durable, and the fast charger changed my life. Highly recommend for quality and service!"</p>
+                                <p class="font-semibold text-text-light">- Sarah M., Tech Enthusiast</p>
+                            </div>
+                        </div>
+                        <!-- Testimonial 2 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/80x80/D4AF37/2F3C4F?text=User+2"
+                                    alt="John D."
+                                    class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-accent-main"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/80x80/D4AF37/2F3C4F?text=Avatar';"
+                                />
+                                <p class="text-lg italic text-text-muted mb-4">"I was looking for a powerful portable speaker, and the Zealot from FADA G exceeded all expectations. The sound clarity and bass are phenomenal. A truly great buy!"</p>
+                                <p class="font-semibold text-text-light">- John D., Music Lover</p>
+                            </div>
+                        </div>
+                        <!-- Testimonial 3 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/80x80/2F3C4F/D4AF37?text=User+3"
+                                    alt="Emily R."
+                                    class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-accent-main"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/80x80/2F3C4F/D4AF37?text=Avatar';"
+                                />
+                                <p class="text-lg italic text-text-muted mb-4">"The customer service here is outstanding. They helped me choose the perfect earbuds, and the delivery was incredibly fast. FADA G is my new favorite gadget store!"</p>
+                                <p class="font-semibold text-text-light">- Emily R., Happy Customer</p>
+                            </div>
+                        </div>
+                        <!-- Testimonial 4 -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/80x80/D4AF37/2F3C4F?text=User+4"
+                                    alt="Michael B."
+                                    class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-accent-main"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/80x80/D4AF37/2F3C4F?text=Avatar';"
+                                />
+                                <p class="text-lg italic text-text-muted mb-4">"I'm impressed with the quality of the JBL speaker I got. It's robust, sounds fantastic, and the futuristic design fits perfectly with my setup. FADA G rocks!"</p>
+                                <p class="font-semibold text-text-light">- Michael B., Gadget Aficionado</p>
+                            </div>
+                        </div>
+                        <!-- Testimonial 5 (New) -->
+                        <div class="flex-none w-full md:w-1/2 lg:w-1/3 p-4">
+                            <div class="bg-bg-medium rounded-lg overflow-hidden shadow-lg border border-primary-dark/50 p-6 text-center transform hover:scale-105 transition-all duration-300">
+                                <img
+                                    src="https://placehold.co/80x80/2F3C4F/D4AF37?text=User+5"
+                                    alt="Liam A."
+                                    class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-accent-main"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/80x80/2F3C4F/D4AF37?text=Avatar';"
+                                />
+                                <p class="text-lg italic text-text-muted mb-4">"The Bass Boost Gadget I purchased has completely transformed my music listening. The depth and richness of sound are incredible. A must-have for any music lover!"</p>
+                                <p class="font-semibold text-text-light">- Liam A., Audiophile</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carousel Navigation -->
+                    <button id="prev-testimonial" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-bg-medium bg-opacity-70 text-text-light p-3 rounded-full hover:bg-opacity-100 transition-colors duration-300 z-10 shadow-lg shadow-primary-dark/50">
+                        &#10094;
+                    </button>
+                    <button id="next-testimonial" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-bg-medium bg-opacity-70 text-text-light p-3 rounded-full hover:bg-opacity-100 transition-colors duration-300 z-10 shadow-lg shadow-accent-main/50">
+                        &#10095;
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Suggestion Bar -->
+        <section class="section-animated py-20 bg-bg-medium border-b border-accent-main/50">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold text-accent-main mb-8">Find Your Perfect Gadget</h2>
+                <div class="relative max-w-xl mx-auto" id="search-bar-container">
+                    <input
+                        type="text"
+                        placeholder="Search for cases, chargers, speakers..."
+                        class="w-full p-4 pl-12 rounded-full bg-bg-dark text-text-light border border-primary-dark focus:outline-none focus:ring-2 focus:ring-accent-main transition-all duration-300 shadow-lg shadow-primary-dark/30"
+                        id="search-input"
+                    />
+                    <i data-lucide="search" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-muted w-6 h-6"></i>
+                    <div id="search-suggestions" class="absolute top-full left-0 w-full bg-bg-dark border border-primary-dark rounded-lg mt-2 shadow-xl hidden max-h-60 overflow-y-auto">
+                        <!-- Suggestions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section id="newsletter" class="section-animated py-20 bg-gradient-to-r from-primary-dark to-accent-main text-text-light text-center">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold mb-4">Stay Connected with FADA G!</h2>
+                <p class="text-xl mb-8">
+                    Sign up for our newsletter to receive exclusive deals, new product alerts, and tech news directly to your inbox.
+                </p>
+                <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+                    <input
+                        type="email"
+                        placeholder="Enter your email address"
+                        class="flex-grow p-4 rounded-full bg-text-light bg-opacity-20 text-text-light placeholder-text-muted border border-text-light focus:outline-none focus:ring-2 focus:ring-text-light transition-all duration-300 shadow-lg"
+                        required
+                    />
+                    <button
+                        type="submit"
+                        class="bg-text-light text-primary-dark font-bold py-4 px-8 rounded-full text-lg hover:bg-silver-gray transform hover:scale-105 transition-all duration-300 shadow-lg shadow-text-light/30"
+                    >
+                        Subscribe Now
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section-animated py-20 bg-bg-dark">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-accent-main text-center mb-12">Get in Touch</h2>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div class="contact-form-card bg-bg-medium p-8 rounded-xl shadow-xl border border-primary-dark/30">
+                        <h3 class="text-3xl font-bold text-text-light mb-6">Send Us a Message</h3>
+                        <form class="space-y-6">
+                            <div>
+                                <label for="contact-name" class="block text-text-muted text-sm font-bold mb-2">Name</label>
+                                <input
+                                    type="text"
+                                    id="contact-name"
+                                    name="name"
+                                    class="shadow-inner appearance-none border border-primary-dark rounded-lg w-full py-3 px-4 bg-bg-dark text-text-light leading-tight focus:outline-none focus:ring-2 focus:ring-accent-main transition-all duration-200"
+                                    placeholder="Your Name"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label for="contact-email" class="block text-text-muted text-sm font-bold mb-2">Email</label>
+                                <input
+                                    type="email"
+                                    id="contact-email"
+                                    name="email"
+                                    class="shadow-inner appearance-none border border-primary-dark rounded-lg w-full py-3 px-4 bg-bg-dark text-text-light leading-tight focus:outline-none focus:ring-2 focus:ring-accent-main transition-all duration-200"
+                                    placeholder="your@example.com"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label for="contact-message" class="block text-text-muted text-sm font-bold mb-2">Message</label>
+                                <textarea
+                                    id="contact-message"
+                                    name="message"
+                                    rows="6"
+                                    class="shadow-inner appearance-none border border-primary-dark rounded-lg w-full py-3 px-4 bg-bg-dark text-text-light leading-tight focus:outline-none focus:ring-2 focus:ring-accent-main transition-all duration-200"
+                                    placeholder="Your message here..."
+                                    required
+                                ></textarea>
+                            </div>
+                            <button
+                                type="submit"
+                                class="bg-gradient-to-r from-primary-dark to-accent-main text-text-light font-bold py-3 px-8 rounded-full text-lg hover:from-primary-light hover:to-accent-dark transform hover:scale-105 transition-all duration-300 shadow-lg shadow-primary-dark/50 w-full"
+                            >
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info & Map -->
+                    <div class="contact-info-card space-y-8">
+                        <div class="bg-bg-medium p-8 rounded-xl shadow-xl border border-accent-main/30">
+                            <h3 class="text-3xl font-bold text-text-light mb-6">Our Location & Contacts</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-4">
+                                    <i data-lucide="map-pin" class="w-8 h-8 text-accent-main"></i>
+                                    <p class="text-lg text-text-muted">
+                                        FADA G Communication Headquarters<br>
+                                        123 Tech Avenue, Innovation District,<br>
+                                        Asaba, Delta, Nigeria, 12345
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <i data-lucide="phone" class="w-8 h-8 text-accent-main"></i>
+                                    <a href="tel:+2348012345678" class="text-lg text-text-muted hover:text-accent-main transition-colors duration-200">+234 801 234 5678</a>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <i data-lucide="message-circle" class="w-8 h-8 text-green-500"></i>
+                                    <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer" class="text-lg text-text-muted hover:text-green-500 transition-colors duration-200">WhatsApp Us</a>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <i data-lucide="mail" class="w-8 h-8 text-accent-main"></i>
+                                    <a href="mailto:info@fadagcomm.com" class="text-lg text-text-muted hover:text-accent-main transition-colors duration-200">info@fadagcomm.com</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Google Map Embed -->
+                        <div class="bg-bg-medium p-4 rounded-xl shadow-xl border border-primary-dark/30 h-80 md:h-96 flex items-center justify-center overflow-hidden">
+                            <iframe
+                                src="https://maps.google.com/maps?q=6.180802612938065,6.73072832045336&z=15&output=embed"
+                                width="100%"
+                                height="100%"
+                                style="border:0; border-radius: 0.75rem;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-bg-medium text-text-light py-10 border-t border-accent-main/50">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Store Name & Tagline -->
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-accent-main">FADA G Communication</h3>
+                <p class="text-text-muted text-sm leading-relaxed">
+                    Your Ultimate Gadget Plug. Elevating your tech experience with quality and innovation.
+                </p>
+            </div>
+
+            <!-- Quick Links Column -->
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-accent-main">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#hero" class="text-text-muted hover:text-accent-main transition-colors duration-200 text-sm">Home</a></li>
+                    <li><a href="#about" class="text-text-muted hover:text-accent-main transition-colors duration-200 text-sm">About Us</a></li>
+                    <li><a href="#products" class="text-text-muted hover:text-accent-main transition-colors duration-200 text-sm">Products</a></li>
+                    <li><a href="#why-choose-us" class="text-text-muted hover:text-accent-main transition-colors duration-200 text-sm">Why Choose Us</a></li>
+                    <li><a href="#testimonials" class="text-text-muted hover:text-accent-main transition-colors duration-200 text-sm">Testimonials</a></li>
+                    <li><a href="#contact" class="text-text-muted hover:text-accent-main transition-colors duration-200 text-sm">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Column -->
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-accent-main">Contact Info</h3>
+                <ul class="space-y-2 text-text-muted text-sm">
+                    <li>123 Tech Avenue, Innovation District</li>
+                    <li>Asaba, Delta, Nigeria, 12345</li>
+                    <li>Email: info@fadagcomm.com</li>
+                    <li>Phone: +234 801 234 5678</li>
+                </ul>
+            </div>
+
+            <!-- Social Media Column -->
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-accent-main">Follow Us</h3>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-text-muted hover:text-accent-main transition-colors duration-200">
+                        <i data-lucide="facebook" class="w-6 h-6"></i>
+                    </a>
+                    <a href="#" class="text-text-muted hover:text-accent-main transition-colors duration-200">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </a>
+                    <a href="#" class="text-text-muted hover:text-accent-main transition-colors duration-200">
+                        <i data-lucide="twitter" class="w-6 h-6"></i>
+                    </a>
+                    <a href="#" class="text-text-muted hover:text-accent-main transition-colors duration-200">
+                        <i data-lucide="youtube" class="w-6 h-6"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-primary-dark mt-8 pt-8 text-center text-text-muted text-sm">
+            &copy; <span id="current-year"></span> FADA G Communication. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-primary-dark to-accent-main text-text-light p-4 rounded-full shadow-lg hover:from-primary-light hover:to-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-main transition-all duration-300 transform hover:scale-110 animate-bounce-in z-40 hidden" aria-label="Scroll to top">
+        <i data-lucide="chevron-up" class="w-6 h-6"></i>
+    </button>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Get current year for footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = mobileMenuButton.querySelector('.menu-icon');
+        const closeIcon = mobileMenuButton.querySelector('.close-icon');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll to Top Button functionality
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopButton.classList.remove('hidden');
+            } else {
+                scrollToTopButton.classList.add('hidden');
+            }
+        });
+
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Scroll-based Animations using IntersectionObserver
+        const animatedSections = document.querySelectorAll('.section-animated');
+        const productCards = document.querySelectorAll('.category-card');
+        const whyChooseCards = document.querySelectorAll('.why-choose-card');
+        // Note: Carousel items are animated by their own JS logic, not IntersectionObserver on individual items
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    switch (sectionId) {
+                        case 'hero':
+                            entry.target.querySelector('img').classList.add('animate-zoom-in');
+                            entry.target.querySelector('h1').classList.add('animate-fade-in-up');
+                            entry.target.querySelector('p').classList.add('animate-fade-in-up', 'delay-100');
+                            entry.target.querySelector('div.space-x-4').classList.add('animate-fade-in-up', 'delay-200');
+                            break;
+                        case 'about':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            entry.target.querySelectorAll('p').forEach((p, index) => {
+                                p.classList.add('animate-fade-in-up');
+                                p.style.animationDelay = `${index * 100}ms`;
+                            });
+                            break;
+                        case 'products':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            productCards.forEach((card, index) => {
+                                card.classList.add('animate-fade-in-up');
+                                card.style.animationDelay = `${index * 100}ms`;
+                            });
+                            break;
+                        case 'featured':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            // Carousel items handled by carousel JS
+                            break;
+                        case 'why-choose-us':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            whyChooseCards.forEach((card, index) => {
+                                card.classList.add('animate-fade-in-up');
+                                card.style.animationDelay = `${index * 100}ms`;
+                            });
+                            break;
+                        case 'testimonials':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            // Carousel items handled by carousel JS
+                            break;
+                        case 'search':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            break;
+                        case 'newsletter':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            entry.target.querySelector('p').classList.add('animate-fade-in-up', 'delay-100');
+                            entry.target.querySelector('form').classList.add('animate-fade-in-up', 'delay-200');
+                            break;
+                        case 'contact':
+                            entry.target.querySelector('h2').classList.add('animate-fade-in');
+                            entry.target.querySelector('.contact-form-card').classList.add('animate-slide-in-left');
+                            entry.target.querySelector('.contact-info-card').classList.add('animate-slide-in-right');
+                            break;
+                    }
+                    observer.unobserve(entry.target); // Stop observing once animated
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        animatedSections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Carousel Logic for Featured Products
+        const productCarousel = document.getElementById('product-carousel');
+        const productItems = productCarousel.querySelectorAll('.flex-none');
+        const prevProductBtn = document.getElementById('prev-product');
+        const nextProductBtn = document.getElementById('next-product');
+        let currentProductSlide = 0;
+
+        function getProductsPerView() {
+            if (window.innerWidth < 768) return 1; // Mobile
+            if (window.innerWidth < 1024) return 2; // Tablet
+            return 3; // Desktop
+        }
+
+        function updateProductCarousel() {
+            const productsPerView = getProductsPerView();
+            const totalSlides = productItems.length;
+            const maxSlide = Math.ceil(totalSlides / productsPerView) - 1;
+
+            if (currentProductSlide < 0) {
+                currentProductSlide = maxSlide;
+            } else if (currentProductSlide > maxSlide) {
+                currentProductSlide = 0;
+            }
+
+            const offset = currentProductSlide * (100 / productsPerView);
+            productCarousel.style.transform = `translateX(-${offset}%)`;
+        }
+
+        prevProductBtn.addEventListener('click', () => {
+            currentProductSlide--;
+            updateProductCarousel();
+        });
+
+        nextProductBtn.addEventListener('click', () => {
+            currentProductSlide++;
+            updateProductCarousel();
+        });
+
+        window.addEventListener('resize', updateProductCarousel);
+        updateProductCarousel(); // Initial call
+
+        // Carousel Logic for Testimonials
+        const testimonialCarousel = document.getElementById('testimonial-carousel');
+        const testimonialItems = testimonialCarousel.querySelectorAll('.flex-none');
+        const prevTestimonialBtn = document.getElementById('prev-testimonial');
+        const nextTestimonialBtn = document.getElementById('next-testimonial');
+        let currentTestimonialSlide = 0;
+
+        function getTestimonialsPerView() {
+            if (window.innerWidth < 768) return 1; // Mobile
+            if (window.innerWidth < 1024) return 2; // Tablet
+            return 3; // Desktop
+        }
+
+        function updateTestimonialCarousel() {
+            const testimonialsPerView = getTestimonialsPerView();
+            const totalSlides = testimonialItems.length;
+            const maxSlide = Math.ceil(totalSlides / testimonialsPerView) - 1;
+
+            if (currentTestimonialSlide < 0) {
+                currentTestimonialSlide = maxSlide;
+            } else if (currentTestimonialSlide > maxSlide) {
+                currentTestimonialSlide = 0;
+            }
+
+            const offset = currentTestimonialSlide * (100 / testimonialsPerView);
+            testimonialCarousel.style.transform = `translateX(-${offset}%)`;
+        }
+
+        prevTestimonialBtn.addEventListener('click', () => {
+            currentTestimonialSlide--;
+            updateTestimonialCarousel();
+        });
+
+        nextTestimonialBtn.addEventListener('click', () => {
+            currentTestimonialSlide++;
+            updateTestimonialCarousel();
+        });
+
+        window.addEventListener('resize', updateTestimonialCarousel);
+        updateTestimonialCarousel(); // Initial call
+
+        // Search Suggestion Bar Logic
+        const searchInput = document.getElementById('search-input');
+        const searchSuggestionsDiv = document.getElementById('search-suggestions');
+        const searchBarContainer = document.getElementById('search-bar-container');
+
+        const searchSuggestionsData = [
+            'iPhone 15 Case', 'Samsung Charger', 'Zealot S67', 'JBL Charge 5', 'Bluetooth Earbuds', 'Power Bank', 'Gaming Headphones', 'Screen Protectors', 'Smartwatches', 'Car Chargers', 'Headphone Adapters', 'USB-C Cables', 'Lightning Cables', 'Portable Fans', 'Mini Projectors', 'VR Headsets', 'Gaming Controllers'
+        ];
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            searchSuggestionsDiv.innerHTML = ''; // Clear previous suggestions
+
+            if (query.length === 0) {
+                searchSuggestionsDiv.classList.add('hidden');
+                return;
+            }
+
+            const filteredSuggestions = searchSuggestionsData.filter(suggestion =>
+                suggestion.toLowerCase().includes(query)
+            );
+
+            if (filteredSuggestions.length > 0) {
+                filteredSuggestions.forEach(suggestion => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.classList.add('p-3', 'text-left', 'text-text-light', 'hover:bg-primary-dark', 'hover:text-accent-main', 'cursor-pointer', 'transition-colors', 'duration-200', 'border-b', 'border-bg-medium');
+                    suggestionItem.textContent = suggestion;
+                    suggestionItem.addEventListener('click', () => {
+                        searchInput.value = suggestion;
+                        searchSuggestionsDiv.classList.add('hidden');
+                    });
+                    searchSuggestionsDiv.appendChild(suggestionItem);
+                });
+                searchSuggestionsDiv.classList.remove('hidden');
+            } else {
+                const noResults = document.createElement('div');
+                noResults.classList.add('p-3', 'text-left', 'text-text-muted');
+                noResults.textContent = 'No suggestions found.';
+                searchSuggestionsDiv.appendChild(noResults);
+                searchSuggestionsDiv.classList.remove('hidden');
+            }
+        });
+
+        // Hide suggestions when clicking outside the search bar
+        document.addEventListener('click', (event) => {
+            if (!searchBarContainer.contains(event.target)) {
+                searchSuggestionsDiv.classList.add('hidden');
+            }
+        });
+
+        // Show suggestions on focus if input has text
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.length > 0) {
+                searchInput.dispatchEvent(new Event('input')); // Trigger input event to show suggestions
+            }
+        });
+
+    </script>
+</body>
+</html>
